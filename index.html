@@ -791,6 +791,7 @@
         <div id="answers-summary-section" class="hidden">
             <div id="answers-list" class="answers-display mb-6">
             </div>
+            <button id="copy-answers-button" class="preview-button mt-3"><i class="fas fa-copy"></i> Copy Answers</button>
             <button id="close-preview-button" class="close-preview-button mt-3">Close Preview</button>
             <button id="start-new-sheet-button" class="reset-button mt-3">Start New Sheet</button>
         </div>
@@ -1102,6 +1103,28 @@
             answerInputSection.classList.remove('hidden');
             answersSummarySection.classList.add('hidden');
             updateQuestionDisplay();
+        });
+
+        // Copy Answers Button functionality
+        const copyAnswersButton = document.getElementById('copy-answers-button');
+        copyAnswersButton.addEventListener('click', () => {
+            // Format answers as numbered list
+            const allQuestionNumbers = Object.keys(answers).map(Number).sort((a, b) => a - b);
+            if (allQuestionNumbers.length === 0) {
+                showMessageBox("No answers recorded.");
+                return;
+            }
+            let formatted = '';
+            allQuestionNumbers.forEach(qNum => {
+                const answer = answers[qNum];
+                formatted += `${qNum}. ${answer !== null ? answer : '(Skipped)'}\n`;
+            });
+            // Copy to clipboard
+            navigator.clipboard.writeText(formatted).then(() => {
+                showMessageBox("Answers copied to clipboard!");
+            }, () => {
+                showMessageBox("Failed to copy answers.");
+            });
         });
 
         muteButton.addEventListener('click', () => {
