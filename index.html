@@ -1105,10 +1105,10 @@
             updateQuestionDisplay();
         });
 
-        // Copy Answers Button functionality
+        // copy answers function
         const copyAnswersButton = document.getElementById('copy-answers-button');
         copyAnswersButton.addEventListener('click', () => {
-            // Format answers as numbered list
+            // numbered format, yah
             const allQuestionNumbers = Object.keys(answers).map(Number).sort((a, b) => a - b);
             if (allQuestionNumbers.length === 0) {
                 showMessageBox("No answers recorded.");
@@ -1119,7 +1119,7 @@
                 const answer = answers[qNum];
                 formatted += `${qNum}. ${answer !== null ? answer : '(Skipped)'}\n`;
             });
-            // Copy to clipboard
+            // clipboard
             navigator.clipboard.writeText(formatted).then(() => {
                 showMessageBox("Answers copied to clipboard!");
             }, () => {
@@ -1352,8 +1352,7 @@
                 yOffset += lineHeight;
             });
 
-            // Ensure summary always starts on a new page
-            if (yOffset > margin || allQuestionNumbers.length === 0) { // Add new page if content exists or if it's the first page and no answers
+            if (yOffset > margin || allQuestionNumbers.length === 0) {
                 doc.addPage();
                 addPdfWatermark(doc);
                 yOffset = margin;
@@ -1399,7 +1398,6 @@
             const pdfBlob = doc.output('blob');
             const pdfUrl = URL.createObjectURL(pdfBlob);
             
-            // Open a new window and embed the PDF using an iframe
             const newWindow = window.open('', '_blank');
             if (newWindow) {
                 const htmlContent = `
@@ -1418,13 +1416,13 @@
                     </html>
                 `;
                 newWindow.document.write(htmlContent);
-                newWindow.document.close(); // Important to close the document stream
-                newWindow.document.title = filenameToDisplay || 'Answer Sheet'; // Explicitly set the new window's title
+                newWindow.document.close(); 
+                newWindow.document.title = filenameToDisplay || 'Answer Sheet'; 
             } else {
                 showMessageBox("Pop-up blocked! Please allow pop-ups for this site to view the PDF.");
             }
             
-            URL.revokeObjectURL(pdfUrl); // Revoke the URL after it's used
+            URL.revokeObjectURL(pdfUrl); 
 
             showMessageBox("PDF opened in a new tab! To save with your chosen filename, use your browser's 'Save As' option (Ctrl+S or Cmd+S) from the new tab.");
         }
